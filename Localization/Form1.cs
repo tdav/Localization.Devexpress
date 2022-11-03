@@ -17,6 +17,7 @@ namespace Localization
 
         private void simpleButton1_Click(object sender, EventArgs e)
         {
+            //https://learn-automation.com/selenium-webdriver-c-sharp-tutorial/
 
             IWebDriver driver = new ChromeDriver();
 
