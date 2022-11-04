@@ -19,7 +19,7 @@ namespace Localization
         {
             //https://learn-automation.com/selenium-webdriver-c-sharp-tutorial/
 
-            IWebDriver driver = new ChromeDriver();
+            IWebDriver driver = new ChromeDriver("C:\\Works\\Devexpress.Localization");
 
             driver.Navigate().GoToUrl("https://localization.devexpress.com/Localization/Modify?version=2022.1&culture=uz-Cyrl-UZ");
 
@@ -45,7 +45,6 @@ namespace Localization
                 for (int i = 0; i < diagnosticsTableRowsCount; i++)
                 {
                     List<IWebElement> rowElements = diagnosticsTableBody.FindElements(By.XPath($".//tr[{i + 1}]//td")).ToList();
-                    List<string> diagnosticsRowContent = new List<string>();
 
                     var it = new Model();
 
@@ -53,10 +52,8 @@ namespace Localization
                     it.English = rowElements[1].Text;
                     it.Suggested = rowElements[2].Text;
 
-
                     diagnosticsTableContent.Add(it);
                 }
-
 
                 try
                 {
