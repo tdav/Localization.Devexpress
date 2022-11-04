@@ -34,13 +34,6 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="DevExpress.BonusSkins.v22.1" />
-    <Reference Include="DevExpress.Data.Desktop.v22.1" />
-    <Reference Include="DevExpress.Data.v22.1" />
-    <Reference Include="DevExpress.Utils.v22.1" />
-    <Reference Include="DevExpress.Sparkline.v22.1.Core" />
-    <Reference Include="DevExpress.XtraEditors.v22.1" />
-    <Reference Include="DevExpress.Printing.v22.1.Core" />
-    <Reference Include="DevExpress.Drawing.v22.1" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -59,7 +52,8 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
-    <Compile Include="Model.cs" />
+    <Compile Include="Models\Model.cs" />
+    <Compile Include="Models\TransModel.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Form1.resx">
@@ -87,6 +81,24 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="DevExpress.Data">
+      <Version>22.1.6</Version>
+    </PackageReference>
+    <PackageReference Include="DevExpress.Data.Desktop">
+      <Version>22.1.6</Version>
+    </PackageReference>
+    <PackageReference Include="DevExpress.Drawing">
+      <Version>22.1.6</Version>
+    </PackageReference>
+    <PackageReference Include="DevExpress.Printing.Core">
+      <Version>22.1.6</Version>
+    </PackageReference>
+    <PackageReference Include="DevExpress.Sparkline.Core">
+      <Version>22.1.6</Version>
+    </PackageReference>
+    <PackageReference Include="DevExpress.Utils">
+      <Version>22.1.6</Version>
+    </PackageReference>
     <PackageReference Include="DevExpress.Win">
       <Version>22.1.6</Version>
     </PackageReference>
