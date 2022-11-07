@@ -1,18 +1,30 @@
-﻿using System;
+﻿using Localization.Models;
+using Newtonsoft.Json;
+using OpenQA.Selenium;
+using OpenQA.Selenium.Chrome;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net;
+using System.Net.Http;
 using System.Threading.Tasks;
+using Cookie = System.Net.Cookie;
 
 namespace Localization
 {
     public partial class Form1 : DevExpress.XtraEditors.XtraForm
     {
         private readonly IWebDriver driver;
+
+
+
         public Form1()
         {
             InitializeComponent();
-            driver = new ChromeDriver("C:\\Works\\Devexpress.Localization");
+            driver = new ChromeDriver();
+
+
         }
 
         private void ParseDevexpress_Click(object sender, EventArgs e)
@@ -29,18 +41,14 @@ namespace Localization
                     try
                     {
                         diagnosticsTableBody = driver.FindElement(By.XPath("/html/body/main/div[2]/div[2]/div[1]/div[4]/table/tbody[1]"));
-
-                        page = driver.FindElement(By.XPath("/html/body/main/div[2]/div[2]/div[1]/div[5]/div[2]/div/div"))
-                                     .FindElement(By.ClassName("pager__button--active"));
                     }
                     catch (Exception ee)
                     {
                         Program.log.Error($"simpleButton1_Click Error: {ee.Message}");
-                        int.TryParse(page.Text, out int curP);
-                        diagnosticsTableContent.CurrentPage = curP;
-                        File.WriteAllText(AppDomain.CurrentDomain.BaseDirectory + $"model.json", JsonConvert.SerializeObject(diagnosticsTableContent, Formatting.Indented));
-                        Task.Delay(15000).Wait();
+                        Task.Delay(5000).Wait();
+                        diagnosticsTableBody = driver.FindElement(By.XPath("/html/body/main/div[2]/div[2]/div[1]/div[4]/table/tbody[1]"));
                     }
+
 
                     int diagnosticsTableRowsCount = diagnosticsTableBody.FindElements(By.XPath("./tr")).Count;
 
@@ -49,13 +57,14 @@ namespace Localization
                         List<IWebElement> rowElements = diagnosticsTableBody.FindElements(By.XPath($".//tr[{i + 1}]//td")).ToList();
 
                         var it = new Model();
-
                         it.Name = rowElements[0].Text;
                         it.English = rowElements[1].Text;
                         it.Suggested = rowElements[2].Text;
-
                         diagnosticsTableContent.Models.Add(it);
                     }
+
+                    var cur_page = driver.FindElement(By.ClassName("pager__button--active"));
+                    diagnosticsTableContent.CurrentPage = cur_page?.Text;
 
                     var txt = JsonConvert.SerializeObject(diagnosticsTableContent, Formatting.Indented);
                     File.WriteAllText(AppDomain.CurrentDomain.BaseDirectory + $"model.json", txt);
@@ -68,8 +77,6 @@ namespace Localization
                     }
                     catch (Exception ee)
                     {
-                        int.TryParse(page.Text, out int curP);
-                        diagnosticsTableContent.CurrentPage = curP;
                         Program.log.Error($"simpleButton1_Click Error: {ee.Message}");
                         goto Tamom;
                     }
@@ -80,12 +87,8 @@ namespace Localization
             }
             catch (Exception ee)
             {
-                int.TryParse(page.Text, out int curP);
-                diagnosticsTableContent.CurrentPage = curP;
-                File.WriteAllText(AppDomain.CurrentDomain.BaseDirectory + $"model.json", JsonConvert.SerializeObject(diagnosticsTableContent, Formatting.Indented));
                 Program.log.Error($"simpleButton1_Click Error: {ee.Message}");
             }
-
         }
 
         private void ParseYandex_Click(object sender, EventArgs e)
@@ -131,9 +134,29 @@ namespace Localization
             driver.Navigate().GoToUrl("https://translate.yandex.ru/?lang=en-uzbcyr");
         }
 
-        private void GoDevexrpess_Click(object sender, EventArgs e)
+        private async void GoDevexrpess_Click(object sender, EventArgs e)
         {
             driver.Navigate().GoToUrl("https://localization.devexpress.com/Localization/Modify?version=2022.1&culture=uz-Cyrl-UZ");
+
+            //driver.Manage().Network.NetworkRequestSent += Network_NetworkRequestSent;
+            //await driver.Manage().Network.StartMonitoring(); 
+        }
+
+
+        private async void simpleButton1_Click(object sender, EventArgs e)
+        {
+            INetwork interceptor = driver.Manage().Network;
+            interceptor.NetworkRequestSent += Interceptor_NetworkRequestSent;
+            //interceptor.NetworkResponseReceived += OnNetworkResponseReceived;
+            await interceptor.StartMonitoring();
+            //driver.Url = "http://the-internet.herokuapp.com/redirect";
+            //await interceptor.StopMonitoring();
+        }
+
+        private void Interceptor_NetworkRequestSent(object sender, NetworkRequestSentEventArgs e)
+        {
+            var h = Newtonsoft.Json.JsonConvert.SerializeObject(e.RequestHeaders, Formatting.Indented);
+            Console.WriteLine($"Method: {e.RequestMethod} Url:{e.RequestUrl} PostData:{e.RequestPostData} Headers:{h}");
         }
 
         private void TranslateDevexpress_Click(object sender, EventArgs e)
@@ -160,8 +183,6 @@ namespace Localization
                     catch (Exception ee)
                     {
                         Program.log.Error($"simpleButton2_Click Error: {ee.Message}");
-                        int.TryParse(page.Text, out int curP);
-                        list.CurrentPage = curP;
                         Task.Delay(15000).Wait();
                     }
 
@@ -185,8 +206,6 @@ namespace Localization
                     }
                     catch (Exception ee)
                     {
-                        int.TryParse(page.Text, out int curP);
-                        list.CurrentPage = curP;
                         File.WriteAllText(AppDomain.CurrentDomain.BaseDirectory + $"model.json", JsonConvert.SerializeObject(list, Formatting.Indented));
                         Program.log.Error($"simpleButton2_Click Error: {ee.Message}");
                         goto Tamom;
@@ -197,10 +216,32 @@ namespace Localization
             }
             catch (Exception ee)
             {
-                int.TryParse(page.Text, out int curP);
-                list.CurrentPage = curP;
                 Program.log.Error($"simpleButton2_Click Error: {ee.Message}");
             }
         }
+
+        private async void btnHttpClient_Click(object sender, EventArgs e)
+        {
+
+            var login = "ctl00$ctl00$Content$Content$pLogin$tbEmail";
+            var passw = "ctl00$ctl00$Content$Content$pLogin$tbPassword";
+
+            var baseAddress = new Uri("https://www.devexpress.com/");
+            var cookieContainer = new CookieContainer();
+            using (var handler = new HttpClientHandler() { CookieContainer = cookieContainer })
+            using (var client = new HttpClient(handler) { BaseAddress = baseAddress })
+            {
+                var content = new FormUrlEncodedContent(new[]
+                {
+                    new KeyValuePair<string, string>("tbEmail", "tdavron@gmail.com"),
+                    new KeyValuePair<string, string>("tbPassword", "GnXDRdyGu7dnV!6"),
+                });
+
+                cookieContainer.Add(baseAddress, new Cookie("CookieName", "cookie_value"));
+                var result = await client.PostAsync("/MyAccount/LogIn", content);
+                var aa = await result.Content.ReadAsStringAsync();
+            }
+        }
+
     }
 }
