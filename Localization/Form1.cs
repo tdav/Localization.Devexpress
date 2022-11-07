@@ -25,6 +25,7 @@ namespace Localization
 
             driver.Manage().Window.Maximize();
 
+
             var diagnosticsTableContent = new List<Model>();
 
             while (true)
