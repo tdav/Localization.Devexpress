@@ -28,13 +28,27 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.ParseDevexpress = new DevExpress.XtraEditors.SimpleButton();
             this.Translate = new DevExpress.XtraEditors.SimpleButton();
             this.GoYandex = new DevExpress.XtraEditors.SimpleButton();
             this.GoDevexpress = new DevExpress.XtraEditors.SimpleButton();
             this.InsertTransToDX = new DevExpress.XtraEditors.SimpleButton();
             this.btnHttpClient = new DevExpress.XtraEditors.SimpleButton();
-            this.simpleButton1 = new DevExpress.XtraEditors.SimpleButton();
+            this.BtnSerializeDesir = new DevExpress.XtraEditors.SimpleButton();
+            this.gridControl1 = new DevExpress.XtraGrid.GridControl();
+            this.modelBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.gridView1 = new DevExpress.XtraGrid.Views.Grid.GridView();
+            this.colName = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.colEnglish = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.colSuggested = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.colUz = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.colLt = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.btnSave = new DevExpress.XtraEditors.SimpleButton();
+            this.btnRefresh = new DevExpress.XtraEditors.SimpleButton();
+            ((System.ComponentModel.ISupportInitialize)(this.gridControl1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.modelBindingSource)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridView1)).BeginInit();
             this.SuspendLayout();
             // 
             // ParseDevexpress
@@ -84,28 +98,110 @@
             // 
             // btnHttpClient
             // 
-            this.btnHttpClient.Location = new System.Drawing.Point(54, 162);
+            this.btnHttpClient.Location = new System.Drawing.Point(54, 91);
             this.btnHttpClient.Name = "btnHttpClient";
             this.btnHttpClient.Size = new System.Drawing.Size(75, 23);
             this.btnHttpClient.TabIndex = 5;
             this.btnHttpClient.Text = "HttpClient";
             this.btnHttpClient.Click += new System.EventHandler(this.btnHttpClient_Click);
             // 
-            // simpleButton1
+            // BtnSerializeDesir
             // 
-            this.simpleButton1.Location = new System.Drawing.Point(191, 162);
-            this.simpleButton1.Name = "simpleButton1";
-            this.simpleButton1.Size = new System.Drawing.Size(75, 23);
-            this.simpleButton1.TabIndex = 6;
-            this.simpleButton1.Text = "HttpClient";
-            this.simpleButton1.Click += new System.EventHandler(this.simpleButton1_Click);
+            this.BtnSerializeDesir.Location = new System.Drawing.Point(262, 91);
+            this.BtnSerializeDesir.Name = "BtnSerializeDesir";
+            this.BtnSerializeDesir.Size = new System.Drawing.Size(75, 23);
+            this.BtnSerializeDesir.TabIndex = 6;
+            this.BtnSerializeDesir.Text = "SerializeDesir";
+            this.BtnSerializeDesir.Click += new System.EventHandler(this.BtnSerializeDesir_Click);
+            // 
+            // gridControl1
+            // 
+            this.gridControl1.DataSource = this.modelBindingSource;
+            this.gridControl1.Location = new System.Drawing.Point(54, 130);
+            this.gridControl1.MainView = this.gridView1;
+            this.gridControl1.Name = "gridControl1";
+            this.gridControl1.Size = new System.Drawing.Size(1269, 676);
+            this.gridControl1.TabIndex = 4;
+            this.gridControl1.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
+            this.gridView1});
+            // 
+            // modelBindingSource
+            // 
+            this.modelBindingSource.DataSource = typeof(Localization.Models.Model);
+            // 
+            // gridView1
+            // 
+            this.gridView1.Columns.AddRange(new DevExpress.XtraGrid.Columns.GridColumn[] {
+            this.colName,
+            this.colEnglish,
+            this.colSuggested,
+            this.colUz,
+            this.colLt});
+            this.gridView1.GridControl = this.gridControl1;
+            this.gridView1.Name = "gridView1";
+            // 
+            // colName
+            // 
+            this.colName.FieldName = "Name";
+            this.colName.Name = "colName";
+            this.colName.Visible = true;
+            this.colName.VisibleIndex = 0;
+            // 
+            // colEnglish
+            // 
+            this.colEnglish.FieldName = "English";
+            this.colEnglish.Name = "colEnglish";
+            this.colEnglish.Visible = true;
+            this.colEnglish.VisibleIndex = 1;
+            // 
+            // colSuggested
+            // 
+            this.colSuggested.FieldName = "Suggested";
+            this.colSuggested.Name = "colSuggested";
+            this.colSuggested.Visible = true;
+            this.colSuggested.VisibleIndex = 2;
+            // 
+            // colUz
+            // 
+            this.colUz.FieldName = "Uz";
+            this.colUz.Name = "colUz";
+            this.colUz.Visible = true;
+            this.colUz.VisibleIndex = 3;
+            // 
+            // colLt
+            // 
+            this.colLt.FieldName = "Lt";
+            this.colLt.Name = "colLt";
+            this.colLt.Visible = true;
+            this.colLt.VisibleIndex = 4;
+            // 
+            // btnSave
+            // 
+            this.btnSave.Location = new System.Drawing.Point(1181, 101);
+            this.btnSave.Name = "btnSave";
+            this.btnSave.Size = new System.Drawing.Size(75, 23);
+            this.btnSave.TabIndex = 7;
+            this.btnSave.Text = "Save";
+            this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
+            // 
+            // btnRefresh
+            // 
+            this.btnRefresh.Location = new System.Drawing.Point(1083, 101);
+            this.btnRefresh.Name = "btnRefresh";
+            this.btnRefresh.Size = new System.Drawing.Size(75, 23);
+            this.btnRefresh.TabIndex = 8;
+            this.btnRefresh.Text = "Refresh";
+            this.btnRefresh.Click += new System.EventHandler(this.btnRefresh_Click);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(593, 297);
-            this.Controls.Add(this.simpleButton1);
+            this.ClientSize = new System.Drawing.Size(1349, 818);
+            this.Controls.Add(this.btnRefresh);
+            this.Controls.Add(this.btnSave);
+            this.Controls.Add(this.gridControl1);
+            this.Controls.Add(this.BtnSerializeDesir);
             this.Controls.Add(this.btnHttpClient);
             this.Controls.Add(this.InsertTransToDX);
             this.Controls.Add(this.GoDevexpress);
@@ -114,6 +210,9 @@
             this.Controls.Add(this.ParseDevexpress);
             this.Name = "Form1";
             this.Text = "Form1";
+            ((System.ComponentModel.ISupportInitialize)(this.gridControl1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.modelBindingSource)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridView1)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -126,7 +225,17 @@
         private DevExpress.XtraEditors.SimpleButton GoDevexpress;
         private DevExpress.XtraEditors.SimpleButton InsertTransToDX;
         private DevExpress.XtraEditors.SimpleButton btnHttpClient;
-        private DevExpress.XtraEditors.SimpleButton simpleButton1;
+        private DevExpress.XtraEditors.SimpleButton BtnSerializeDesir;
+        private DevExpress.XtraGrid.GridControl gridControl1;
+        private System.Windows.Forms.BindingSource modelBindingSource;
+        private DevExpress.XtraGrid.Views.Grid.GridView gridView1;
+        private DevExpress.XtraGrid.Columns.GridColumn colName;
+        private DevExpress.XtraGrid.Columns.GridColumn colEnglish;
+        private DevExpress.XtraGrid.Columns.GridColumn colSuggested;
+        private DevExpress.XtraGrid.Columns.GridColumn colUz;
+        private DevExpress.XtraGrid.Columns.GridColumn colLt;
+        private DevExpress.XtraEditors.SimpleButton btnSave;
+        private DevExpress.XtraEditors.SimpleButton btnRefresh;
     }
 }
 
