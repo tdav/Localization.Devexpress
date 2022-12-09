@@ -93,7 +93,7 @@ namespace Localization
             {
                 var json = File.ReadAllText(AppDomain.CurrentDomain.BaseDirectory + "model.json");
                 var list = JsonConvert.DeserializeObject<TransModel>(json);
-                list.Models = list.Models.Where(x => x.Uz == null).ToList();
+                var newL = list.Models.Where(x => string.IsNullOrWhiteSpace(x.Uz)).ToList();
 
                 var translatorArea = driver.FindElement(By.XPath("/html/body/div[1]/main/div[1]"))
                                            .FindElement(By.XPath("/html/body/div[1]/main/div[1]/div[1]"));
@@ -106,13 +106,26 @@ namespace Localization
 
                 var transWordArea = translatorArea.FindElement(By.XPath("//*[@id=\"translation\"]"));
 
-                foreach (var item in list.Models)
+                int i = 0;
+                Console.WriteLine(newL.Count);
+
+                foreach (var item in newL)
                 {
                     wordArea.SendKeys(item.English);
-                    Task.Delay(1000).Wait();
+                    Task.Delay(2400).Wait();
                     item.Uz = transWordArea.Text;
                     wordArea.Clear();
+                    i++;
+                    Console.WriteLine(i);
                 }
+
+                foreach (var it in newL)
+                {
+                    var m = list.Models.FirstOrDefault(x => x.English == it.English);
+                    m.Uz = it.Uz;
+                }
+
+                list.Models = list.Models.Distinct().ToList();
 
                 json = JsonConvert.SerializeObject(list, Formatting.Indented);
                 File.WriteAllText(AppDomain.CurrentDomain.BaseDirectory + "model.json", json);
